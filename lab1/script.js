@@ -47,26 +47,27 @@ document.getElementById("submit").onclick = (e) => {
 
   var formatCount = d3.format(",.0f");
 
-  var margin = { top: 10, right: 30, bottom: 30, left: 30 },
+  var margin = { top: 50, right: 30, bottom: 30, left: 50 },
     width = 960 - margin.left - margin.right,
     height = 500 - margin.top - margin.bottom;
 
   var x = d3.scale.linear().domain([0, 1]).range([0, width]);
 
-  // Generate a histogram using twenty uniformly-spaced bins.
   var data = d3.layout.histogram().bins(x.ticks(20))(res);
 
-  var y = d3.scale
-    .linear()
-    .domain([
-      0,
-      d3.max(data, function (d) {
-        return d.y;
-      }),
-    ])
-    .range([height, 0]);
+  // var y = d3.scale
+  //   .linear()
+  //   .domain([
+  //     0,
+  //     d3.max(data, function (d) {
+  //       return d.y;
+  //     }),
+  //   ])
+  //   .range([height, 0]);
+  var y = d3.scale.linear().domain([0, 1]).range([height, 0]);
 
   var xAxis = d3.svg.axis().scale(x).orient("bottom");
+  var yAxis = d3.svg.axis().scale(y).orient("left");
 
   var svg = d3
     .select("#histogram")
@@ -83,7 +84,14 @@ document.getElementById("submit").onclick = (e) => {
     .append("g")
     .attr("class", "bar")
     .attr("transform", function (d) {
-      return "translate(" + x(d.x) + "," + y(d.y) + ")";
+      // return "translate(" + x(d.x) + "," + y(d.y) + ")";
+      return (
+        "translate(" +
+        x(d.x) +
+        "," +
+        (height - (height - y(d.y)) / res.length) +
+        ")"
+      );
     });
 
   bar
@@ -91,7 +99,8 @@ document.getElementById("submit").onclick = (e) => {
     .attr("x", 1)
     .attr("width", x(data[0].dx) - 1)
     .attr("height", function (d) {
-      return height - y(d.y);
+      // return height - y(d.y);
+      return (height - y(d.y)) / res.length;
     });
 
   bar
@@ -109,6 +118,12 @@ document.getElementById("submit").onclick = (e) => {
     .attr("class", "x axis")
     .attr("transform", "translate(0," + height + ")")
     .call(xAxis);
+
+  svg
+    .append("g")
+    .attr("class", "y axis")
+    .attr("transform", "translate(0, 0)")
+    .call(yAxis);
 
   let mat = res.reduce((prev, curr) => prev + curr) / res.length;
   document.getElementById("res_mat").innerHTML = mat;
