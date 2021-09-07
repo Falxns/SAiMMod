@@ -45,7 +45,8 @@ document.getElementById("submit").onclick = (e) => {
   lemer(a.value, m.value);
   document.getElementById("histogram").innerHTML = "";
 
-  var formatCount = d3.format(",.0f");
+  // var formatCount = d3.format(",.0f");
+  var formatCount = d3.format(",.3f");
 
   var margin = { top: 50, right: 30, bottom: 30, left: 50 },
     width = 960 - margin.left - margin.right,
@@ -110,7 +111,8 @@ document.getElementById("submit").onclick = (e) => {
     .attr("x", x(data[0].dx) / 2)
     .attr("text-anchor", "middle")
     .text(function (d) {
-      return formatCount(d.y);
+      // return formatCount(d.y);
+      return formatCount(d.y / res.length);
     });
 
   svg
