@@ -164,7 +164,19 @@ function exponent(inputArray, l) {
   });
 }
 
-function gamma(inputArray, n, l) {}
+function gamma(inputArray, n, l) {
+  let counter = 0;
+  let res = [];
+  for (let i = 0; i < inputArray.length; i++) {
+    let mult = 1;
+    for (let j = 0; j < n; j++) {
+      mult *= inputArray[counter % inputArray.length];
+      counter++;
+    }
+    res.push((-1 / l) * Math.log(mult));
+  }
+  return res;
+}
 
 document.getElementById("submit").onclick = (e) => {
   let gener = lemer(+a.value, +R0.value, +m.value);
