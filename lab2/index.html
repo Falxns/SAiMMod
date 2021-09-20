@@ -17,12 +17,19 @@
     <input type="number" id="m" value="5" />
     <select id="selectRaspred">
       <option value="ravnomern">Равномерное</option>
-      <option value="gay">Gay</option>
+      <option value="gauss">Гауссово</option>
+      <option value="exponent">Экспоненциальное</option>
     </select>
     <p class="ravnomern">a</p>
     <input class="ravnomern" type="number" id="ravnomern_a" value="1" />
     <p class="ravnomern">b</p>
-    <input class="ravnomern" type="number" id="ravnomern_b" value="5" />
+    <input class="ravnomern" type="number" id="ravnomern_b" value="100" />
+    <p class="gauss hidden">mx</p>
+    <input class="gauss hidden" type="number" id="gauss_m" value="1" />
+    <p class="gauss hidden">σx</p>
+    <input class="gauss hidden" type="number" id="gauss_s" value="3" />
+    <p class="exponent hidden">λ</p>
+    <input class="exponent hidden" type="number" id="exponent_l" value="1" />
     <input type="submit" value="Submit" id="submit" />
     <div id="histogram"></div>
     <p>Математическое ожидание:</p>

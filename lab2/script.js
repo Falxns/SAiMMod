@@ -3,8 +3,13 @@ const R0 = document.getElementById("R0");
 const m = document.getElementById("m");
 const ravnomernA = document.getElementById("ravnomern_a");
 const ravnomernB = document.getElementById("ravnomern_b");
+const gaussM = document.getElementById("gauss_m");
+const gaussS = document.getElementById("gauss_s");
+const exponentL = document.getElementById("exponent_l");
 const selector = document.getElementById("selectRaspred");
 const elementsRavnomern = document.getElementsByClassName("ravnomern");
+const elementsGauss = document.getElementsByClassName("gauss");
+const elementsExponent = document.getElementsByClassName("exponent");
 
 function drawHistogram(resArray) {
   document.getElementById("histogram").innerHTML = "";
@@ -109,12 +114,12 @@ function calculateValues() {
       mat = (+ravnomernA.value + +ravnomernB.value) / 2;
       disp = (+ravnomernB.value - +ravnomernA.value) ** 2 / 12;
       break;
+    case "exponent":
+      mat = 1 / +exponentL.value;
+      disp = 1 / (+exponentL.value) ** 2;
+      break;
   }
-  // let mat = resArray.reduce((prev, curr) => prev + curr) / resArray.length;
 
-  // let disp =
-  //   resArray.reduce((prev, curr) => prev + Math.pow(curr - mat, 2)) /
-  //   (resArray.length - 1);
   document.getElementById("res_mat").innerHTML = mat;
   document.getElementById("res_disp").innerHTML = disp;
   document.getElementById("res_otklon").innerHTML = Math.sqrt(disp);
@@ -126,9 +131,34 @@ function ravnomern(inputArray, a, b) {
   });
 }
 
+function gauss(inputArray, m, s) {
+  let res = 0;
+  for (let i = 0; i < 6; i++) {
+    res += inputArray[i];
+  }
+  return m + s * Math.sqrt(2) * (res - 3);
+}
+
+function exponent(inputArray, l) {
+  return inputArray.map((curr) => {
+    return -(1 / l) * Math.log(curr);
+  });
+}
+
 document.getElementById("submit").onclick = (e) => {
   let gener = lemer(+a.value, +R0.value, +m.value);
-  let res = ravnomern(gener, +ravnomernA.value, +ravnomernB.value);
+  let res;
+  switch (selector.value) {
+    case "ravnomern":
+      res = ravnomern(gener, +ravnomernA.value, +ravnomernB.value);
+      break;
+    case "gauss":
+      res = gauss(gener, +gaussM.value, +gaussS.value);
+      break;
+    case "exponent":
+      res = exponent(gener, +exponentL.value);
+      break;
+  }
 
   drawHistogram(res);
   calculateValues();
@@ -140,10 +170,33 @@ selector.onchange = (e) => {
       Array.prototype.forEach.call(elementsRavnomern, (el) => {
         el.className = "ravnomern";
       });
+      Array.prototype.forEach.call(elementsGauss, (el) => {
+        el.className = "gauss hidden";
+      });
+      Array.prototype.forEach.call(elementsExponent, (el) => {
+        el.className = "exponent hidden";
+      });
       break;
-    case "gay":
+    case "gauss":
+      Array.prototype.forEach.call(elementsGauss, (el) => {
+        el.className = "gauss";
+      });
       Array.prototype.forEach.call(elementsRavnomern, (el) => {
         el.className = "ravnomern hidden";
+      });
+      Array.prototype.forEach.call(elementsExponent, (el) => {
+        el.className = "exponent hidden";
+      });
+      break;
+    case "exponent":
+      Array.prototype.forEach.call(elementsExponent, (el) => {
+        el.className = "exponent";
+      });
+      Array.prototype.forEach.call(elementsRavnomern, (el) => {
+        el.className = "ravnomern hidden";
+      });
+      Array.prototype.forEach.call(elementsGauss, (el) => {
+        el.className = "gauss hidden";
       });
       break;
   }
