@@ -122,6 +122,7 @@ function calculateValues(inputArray) {
       break;
     case "gauss":
     case "triangle":
+    case "simpson":
       mat = inputArray.reduce((prev, curr) => prev + curr) / inputArray.length;
       disp =
         inputArray.reduce((prev, curr) => prev + (curr - mat) ** 2) /
@@ -197,6 +198,17 @@ function triangle(inputArray, a, b) {
   return res;
 }
 
+function simpson(inputArray) {
+  let res = [];
+  for (let i = 0; i < inputArray.length; i++) {
+    res.push(
+      inputArray[(i * 2) % inputArray.length] +
+        inputArray[(i * 2 + 1) % inputArray.length]
+    );
+  }
+  return res;
+}
+
 document.getElementById("submit").onclick = (e) => {
   let gener = lemer(+a.value, +R0.value, +m.value);
   let res;
@@ -215,6 +227,9 @@ document.getElementById("submit").onclick = (e) => {
       break;
     case "triangle":
       res = triangle(gener, +triangleA.value, +triangleB.value);
+      break;
+    case "simpson":
+      res = simpson(gener);
       break;
   }
 
@@ -311,6 +326,22 @@ selector.onchange = (e) => {
       });
       Array.prototype.forEach.call(elementsGamma, (el) => {
         el.className = "gamma hidden";
+      });
+    case "simpson":
+      Array.prototype.forEach.call(elementsRavnomern, (el) => {
+        el.className = "ravnomern hidden";
+      });
+      Array.prototype.forEach.call(elementsGauss, (el) => {
+        el.className = "gauss hidden";
+      });
+      Array.prototype.forEach.call(elementsExponent, (el) => {
+        el.className = "exponent hidden";
+      });
+      Array.prototype.forEach.call(elementsGamma, (el) => {
+        el.className = "gamma hidden";
+      });
+      Array.prototype.forEach.call(elementsTriangle, (el) => {
+        el.className = "triangle hidden";
       });
       break;
   }
