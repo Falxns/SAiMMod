@@ -31,7 +31,8 @@ function drawHistogram(resArray) {
     .linear()
     .domain([0, d3.max(resArray) + 1])
     .range([0, width]);
-  var y = d3.scale.linear().domain([0, 1]).range([height, 0]);
+  // var y = d3.scale.linear().domain([0, 1]).range([height, 0]);
+  var y = d3.scale.linear().domain([0, 0.5]).range([height, 0]);
 
   var data = d3.layout.histogram().bins(x.ticks(20))(resArray);
 
